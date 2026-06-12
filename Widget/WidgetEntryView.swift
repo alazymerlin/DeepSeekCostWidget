@@ -12,7 +12,7 @@ struct WidgetEntryView: View {
             SmallWidgetView(entry: entry)
         case .systemMedium:
             MediumWidgetView(entry: entry)
-        case .systemLarge:
+        case .systemLarge, .systemExtraLarge:
             LargeWidgetView(entry: entry)
         @unknown default:
             SmallWidgetView(entry: entry)
