@@ -26,6 +26,11 @@ final class DeepSeekAPI {
         return URLSession(configuration: config)
     }()
 
+    struct BalanceInfo {
+        let totalBalance: Double
+        let toppedUpBalance: Double
+    }
+
     private func makeURL(_ settings: AppSettings, path: String) -> URL? {
         URL(string: "\(settings.apiBaseURL)\(path)")
     }
@@ -34,9 +39,17 @@ final class DeepSeekAPI {
         ["Authorization": "Bearer \(apiKey)", "Content-Type": "application/json"]
     }
 
+    /// 将 API 返回值转为 Double，兼容 String 和 Number 两种类型
+    private func parseBalanceValue(_ value: Any?) -> Double? {
+        guard let value else { return nil }
+        if let d = value as? Double { return d }
+        if let s = value as? String, let d = Double(s) { return d }
+        return nil
+    }
+
     // MARK: - 获取余额
 
-    func fetchBalance(settings: AppSettings) async throws -> Double {
+    func fetchBalance(settings: AppSettings) async throws -> BalanceInfo {
         guard let url = makeURL(settings, path: "/user/balance") else {
             throw DeepSeekAPIError.invalidURL
         }
@@ -52,28 +65,33 @@ final class DeepSeekAPI {
             throw DeepSeekAPIError.httpError(res.statusCode, body)
         }
 
-        // DeepSeek balance API 返回: { "balance_infos": [...], "is_available": true }
-        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-           let infos = json["balance_infos"] as? [[String: Any]],
-           let first = infos.first,
-           let balance = first["total_balance"] as? Double {
-            return balance
+        // DeepSeek balance API 返回:
+        // { "is_available": true, "balance_infos": [{ "currency": "USD", "total_balance": "100.000", ... }] }
+        // 注意: total_balance / topped_up_balance 可能是 String 或 Number
+        guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let infos = json["balance_infos"] as? [[String: Any]],
+              let first = infos.first,
+              let balance = parseBalanceValue(first["total_balance"]),
+              let toppedUp = parseBalanceValue(first["topped_up_balance"]) ?? parseBalanceValue(first["granted_balance"]) else {
+            throw DeepSeekAPIError.decodeError("无法解析余额数据")
         }
-        throw DeepSeekAPIError.decodeError("无法解析余额数据")
+        return BalanceInfo(totalBalance: balance, toppedUpBalance: toppedUp)
     }
 
     // MARK: - 获取消耗记录
 
     func fetchCostData(settings: AppSettings) async throws -> CostData {
-        let balance = try await fetchBalance(settings: settings)
+        let info = try await fetchBalance(settings: settings)
+        let balance = info.totalBalance
         let now = Date()
 
         // 从本地历史推算消耗
         let previous = AppGroup.loadCostData()
         let prevBalance = previous?.totalBalance ?? balance
 
-        // 计算总消耗
-        let totalCost = max(0, 100.0 - balance)
+        // 用 topped_up_balance 估算总成本，falls back to 100
+        let estimatedTopUp = info.toppedUpBalance > 0 ? info.toppedUpBalance : 100.0
+        let totalCost = max(0, estimatedTopUp - balance)
 
         // 今日/当月消耗基于差值
         let todayCost: Double
