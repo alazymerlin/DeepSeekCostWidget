@@ -1,0 +1,49 @@
+name: DeepSeekCostWidget
+options:
+  bundleIdPrefix: com.deepseekcostwidget
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+
+targets:
+  DeepSeekCostWidget:
+    type: application
+    platform: macOS
+    sources:
+      - path: App
+      - path: Shared
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_NSMainNibFile: ""
+        INFOPLIST_KEY_NSPrincipalClass: ""
+        PRODUCT_BUNDLE_IDENTIFIER: com.deepseekcostwidget.app
+    entitlements:
+      path: App/App.entitlements
+    dependencies:
+      - target: DeepSeekCostWidgetExtension
+
+  DeepSeekCostWidgetExtension:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Widget
+      - path: Shared
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: DeepSeekCostWidget
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        INFOPLIST_KEY_NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+        PRODUCT_BUNDLE_IDENTIFIER: com.deepseekcostwidget.app.widget
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
+    entitlements:
+      path: Widget/Widget.entitlements
+    dependencies: []
