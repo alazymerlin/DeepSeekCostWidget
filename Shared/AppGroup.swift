@@ -2,7 +2,7 @@ import Foundation
 
 enum AppGroup {
     private static let suiteNameKey = "APP_GROUP_SUITE_NAME"
-    static let suiteName = "TQK63XXH38.com.deepseekcostwidget.group"
+    static let suiteName = "URXRP62983.com.deepseekcostwidget.group"
 
     static let defaults = UserDefaults(suiteName: suiteName)!
 

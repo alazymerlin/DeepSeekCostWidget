@@ -132,6 +132,20 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					ADCCB6541BC90AA2A4E0BBA0 = {
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+					5D7961EAE6D7FC6D9690649C = {
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = AA05EC483D3CCDE24FE9E197 /* Build configuration list for PBXProject "DeepSeekCostWidget" */;
@@ -186,6 +200,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DeepSeekCostWidget;
 				INFOPLIST_KEY_NSExtension = "[\"NSExtensionPointIdentifier\": \"com.apple.widgetkit-extension\"]";
@@ -197,6 +212,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app.widget;
 				SDKROOT = macosx;
+				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Release;
 		};
@@ -206,6 +222,7 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DeepSeekCostWidget;
 				INFOPLIST_KEY_NSExtension = "[\"NSExtensionPointIdentifier\": \"com.apple.widgetkit-extension\"]";
@@ -217,6 +234,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app.widget;
 				SDKROOT = macosx;
+				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Debug;
 		};
@@ -226,6 +244,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -237,6 +256,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app;
 				SDKROOT = macosx;
+				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Release;
 		};
@@ -246,6 +266,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -257,6 +278,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app;
 				SDKROOT = macosx;
+				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Debug;
 		};
