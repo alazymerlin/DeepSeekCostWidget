@@ -37,11 +37,9 @@ targets:
       - path: Shared
     settings:
       base:
-        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: Widget/Info.plist
         INFOPLIST_KEY_CFBundleDisplayName: DeepSeekCostWidget
         INFOPLIST_KEY_NSHumanReadableCopyright: ""
-        INFOPLIST_KEY_NSExtension:
-          NSExtensionPointIdentifier: com.apple.widgetkit-extension
         PRODUCT_BUNDLE_IDENTIFIER: com.deepseekcostwidget.app.widget
         ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
     entitlements:
