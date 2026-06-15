@@ -66,16 +66,19 @@ final class DeepSeekAPI {
         }
         let monthlyCost = max(0, prev.monthStartBalance - balance)
 
-        // 5. 每日记录
+        // 5. 每日记录 — 始终维护最近14天窗口，以今天为最后一天
         var dailyCosts = prev.dailyCosts
-        if newDay {
-            if dailyCosts.count >= 14 { dailyCosts.removeFirst() }
-            dailyCosts.append(DailyCost(date: Self.fmt.string(from: now), amount: todayCost))
-        } else if !dailyCosts.isEmpty {
-            dailyCosts[dailyCosts.count - 1] = DailyCost(
-                date: Self.fmt.string(from: now), amount: todayCost)
+        let todayStr = Self.fmt.string(from: now)
+        if let lastEntry = dailyCosts.last, lastEntry.date == todayStr {
+            dailyCosts[dailyCosts.count - 1] = DailyCost(date: todayStr, amount: todayCost)
         } else {
-            dailyCosts.append(DailyCost(date: Self.fmt.string(from: now), amount: todayCost))
+            dailyCosts.append(DailyCost(date: todayStr, amount: todayCost))
+            if dailyCosts.count > 14 { dailyCosts.removeFirst() }
+        }
+        // 填充不足14天的空白
+        while dailyCosts.count < 14 {
+            let d = cal.date(byAdding: .day, value: -(dailyCosts.count), to: now)!
+            dailyCosts.insert(DailyCost(date: Self.fmt.string(from: d), amount: 0), at: 0)
         }
 
         // 6. 模型分布

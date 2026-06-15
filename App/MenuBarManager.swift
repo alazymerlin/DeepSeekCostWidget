@@ -79,6 +79,20 @@ final class MenuBarManager: ObservableObject {
         }
     }
 
+    func showPopover() {
+        guard let popover, let button = statusItem?.button else { return }
+        if !popover.isShown {
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            popover.contentViewController?.view.window?.makeKey()
+            eventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseDown]) { [weak self] event in
+                if let pw = popover.contentViewController?.view.window, event.window != pw {
+                    self?.closePopover()
+                }
+                return event
+            }
+        }
+    }
+
     private func closePopover() {
         popover?.performClose(nil)
         if let monitor = eventMonitor {

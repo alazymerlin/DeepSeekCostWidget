@@ -11,19 +11,19 @@ struct SmallWidgetView: View {
                     Image(systemName: "chart.bar.fill")
                         .font(.caption)
                         .foregroundColor(.accentColor)
-                    Text("DeepSeek")
+                    Text("DS Cost")
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
 
                 Spacer()
 
-                Text(entry.displayAmount(data.monthlyCost))
+                Text(entry.displayAmount(data.todayCost))
                     .font(.title.monospacedDigit())
                     .fontWeight(.bold)
                     .foregroundColor(.accentColor)
 
-                Text(L10n.monthlyCost)
+                Text("今日消耗")
                     .font(.caption2)
                     .foregroundColor(.secondary)
 
