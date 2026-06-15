@@ -14,7 +14,7 @@ struct LargeWidgetView: View {
                         .font(.headline)
                         .foregroundColor(.accentColor)
                     Spacer()
-                    Text("刷新")
+                    Text(L10n.refresh)
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
@@ -25,7 +25,7 @@ struct LargeWidgetView: View {
                         Text(entry.displayAmount(data.monthlyCost))
                             .font(.title.bold().monospacedDigit())
                             .foregroundColor(.accentColor)
-                        Text("本月消耗")
+                        Text(L10n.monthlyCost)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -34,7 +34,7 @@ struct LargeWidgetView: View {
                         Text(entry.displayAmount(data.todayCost))
                             .font(.title.bold().monospacedDigit())
                             .foregroundColor(.accentColor)
-                        Text("今日消耗")
+                        Text(L10n.todayCost)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -42,7 +42,7 @@ struct LargeWidgetView: View {
 
                 // 14天趋势图
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("近14天消耗趋势")
+                    Text(L10n.trend14Days)
                         .font(.caption)
                         .foregroundColor(.secondary)
 
@@ -76,26 +76,25 @@ struct LargeWidgetView: View {
 
                 // 模型分布
                 VStack(alignment: .leading, spacing: 6) {
-                    Text("模型分布")
+                    Text(L10n.modelDistribution)
                         .font(.caption)
                         .foregroundColor(.secondary)
 
                     ForEach(data.modelCosts) { mc in
+                        let barPct = min(mc.amount * 10, 100)
                         VStack(spacing: 3) {
                             HStack {
                                 Text(mc.displayName)
                                     .font(.caption)
                                 Spacer()
-                                Text("\(Int(mc.percentage))%")
-                                    .font(.caption.monospacedDigit())
-                                    .foregroundColor(.accentColor)
                                 Text(entry.displayAmount(mc.amount))
                                     .font(.caption.monospacedDigit())
+                                    .foregroundColor(.accentColor)
                             }
                             GeometryReader { geo in
                                 RoundedRectangle(cornerRadius: 2)
                                     .fill(Color.accentColor.opacity(0.5))
-                                    .frame(width: geo.size.width * mc.percentage / 100)
+                                    .frame(width: geo.size.width * barPct / 100)
                             }
                             .frame(height: 6)
                         }
@@ -108,7 +107,7 @@ struct LargeWidgetView: View {
                         .font(.caption2.monospacedDigit())
                         .foregroundColor(.secondary)
                     Spacer()
-                    Text("更新于 \(formatTime(data.lastUpdated))")
+                    Text("\(L10n.updated) \(formatTime(data.lastUpdated))")
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
@@ -118,11 +117,11 @@ struct LargeWidgetView: View {
                 Image(systemName: entry.error != nil ? "exclamationmark.triangle.fill" : "key.fill")
                     .font(.title)
                     .foregroundColor(entry.error != nil ? .orange : .accentColor)
-                Text(entry.error ?? "请配置 API Key")
+                Text(entry.error ?? L10n.noAPIKey)
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
-                Text("打开菜单栏 App 进行设置")
+                Text(L10n.openAppToConfig)
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }

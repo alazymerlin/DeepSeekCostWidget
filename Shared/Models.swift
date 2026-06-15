@@ -2,21 +2,23 @@ import Foundation
 
 struct CostData: Codable, Equatable {
     var totalBalance: Double
-    var totalCost: Double
     var todayCost: Double
     var monthlyCost: Double
     var dailyCosts: [DailyCost]
     var modelCosts: [ModelCost]
     var lastUpdated: Date
+    var todayBaseBalance: Double
+    var monthStartBalance: Double
 
     static let empty = CostData(
         totalBalance: 0,
-        totalCost: 0,
         todayCost: 0,
         monthlyCost: 0,
         dailyCosts: [],
         modelCosts: [],
-        lastUpdated: .distantPast
+        lastUpdated: .distantPast,
+        todayBaseBalance: 0,
+        monthStartBalance: 0
     )
 }
 
@@ -31,15 +33,26 @@ struct ModelCost: Codable, Identifiable, Equatable {
     let model: String
     let amount: Double
     let percentage: Double
+    let totalTokens: Int64
 
     static let knownModels: [String: String] = [
-        "deepseek-chat": "Chat",
-        "deepseek-coder": "Coder",
-        "deepseek-reasoner": "Reasoner"
+        "deepseek-v4-flash": "V4 Flash",
+        "deepseek-v4-pro": "V4 Pro",
     ]
 
     var displayName: String {
         Self.knownModels[model] ?? model
+    }
+
+    var formattedTokens: String {
+        if totalTokens >= 1_000_000_000 {
+            return String(format: "%.1fB", Double(totalTokens) / 1_000_000_000)
+        } else if totalTokens >= 1_000_000 {
+            return String(format: "%.1fM", Double(totalTokens) / 1_000_000)
+        } else if totalTokens >= 1_000 {
+            return String(format: "%.1fK", Double(totalTokens) / 1_000)
+        }
+        return "\(totalTokens)"
     }
 }
 
@@ -49,6 +62,8 @@ struct AppSettings: Codable {
     var currency: Currency = .cny
     var exchangeRate: Double = 7.25
     var apiBaseURL: String = "https://api.deepseek.com"
+    var initialBalance: Double = 0
+    var lastTrackedMonth: String = ""
 
     enum Currency: String, Codable, CaseIterable {
         case usd = "USD"
