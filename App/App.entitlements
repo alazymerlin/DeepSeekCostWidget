@@ -4,9 +4,11 @@
 <dict>
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
+	<key>com.apple.security.network.client</key>
+	<true/>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>$(AppGroupIdentifier)</string>
+		<string>NG6Z746LU7.com.deepseekcostwidget.group</string>
 	</array>
 </dict>
 </plist>
