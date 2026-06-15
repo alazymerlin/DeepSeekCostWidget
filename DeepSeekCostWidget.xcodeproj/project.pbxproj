@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01A13681B455D6344319C626 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBAED1572E7437E1C638B2FC /* Provider.swift */; };
+		1085ABA2D8674D424AC2836E /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFBA01676004D8A9161BF69 /* AppGroup.swift */; };
+		12C036A80A8063BE78886A53 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0323ADFCD61DCB17B252B660 /* Strings.swift */; };
+		253C9722988717D39D9831B9 /* DeepSeekAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDEF00BCCAB39E07AC02201 /* DeepSeekAPI.swift */; };
+		2818CBBD7EE0C3D764D12B6A /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFBA01676004D8A9161BF69 /* AppGroup.swift */; };
+		284489EC504F8BBAE28B88C0 /* WidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D862705E75806FFFDED65D2 /* WidgetBundle.swift */; };
+		34992CDBB5592BFE871E5B45 /* PopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D938C4AEB28FE15FB6175759 /* PopoverView.swift */; };
+		41B60CF66E3A31E093B42C6A /* SmallWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A903C4D643FE8FAB2A24D646 /* SmallWidgetView.swift */; };
+		48494C37B2B8A5EAA89D5D8A /* MenuBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CB7B943018A222C086CDB3F /* MenuBarManager.swift */; };
+		5BDE4C8DEDA9A17E20451D61 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95335C8F3D39D682F2B5F06B /* Models.swift */; };
+		8F3323E0E0CEDF301D495F9D /* WidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9129E6BD6A996BCB023491 /* WidgetEntryView.swift */; };
+		9472470DA582A3D7C3654D15 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95335C8F3D39D682F2B5F06B /* Models.swift */; };
+		975DA3C165C71131AF4F6DFC /* DeepSeekCostWidgetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B293487B006F12F20B815D6 /* DeepSeekCostWidgetApp.swift */; };
+		ADF2FF6E094DD5EAD9796B52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD505B03DA9ECD0C3F72BB39 /* Assets.xcassets */; };
+		BBA6FC94C2F8252F1658CECE /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0323ADFCD61DCB17B252B660 /* Strings.swift */; };
+		C1FC788EE0DA52BEEAE405F6 /* LargeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C97AEA903C691227512CCA /* LargeWidgetView.swift */; };
+		C723E3530CAA881B7E518D2E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 410AB56D44B275A2776B1196 /* SettingsView.swift */; };
+		D4BFCCD327F4BCA2C3CC3FFC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F11B58225842A5FE72FFBD49 /* Assets.xcassets */; };
+		E7BCBCCA74DECBE081F29682 /* MediumWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 169693AACF06814899DFD949 /* MediumWidgetView.swift */; };
+		ECAB22CB4332FE5E22C674BA /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA03CFDF164C9B65056FFD97 /* DataManager.swift */; };
+		F5CB4C90753FE175F223C583 /* DeepSeekAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEDEF00BCCAB39E07AC02201 /* DeepSeekAPI.swift */; };
 		F8788D88981B6889DE76180C /* DeepSeekCostWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 37C241E3A999D2D39464F849 /* DeepSeekCostWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -35,17 +56,41 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0323ADFCD61DCB17B252B660 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		169693AACF06814899DFD949 /* MediumWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediumWidgetView.swift; sourceTree = "<group>"; };
+		2B293487B006F12F20B815D6 /* DeepSeekCostWidgetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepSeekCostWidgetApp.swift; sourceTree = "<group>"; };
+		2FFBA01676004D8A9161BF69 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		37C241E3A999D2D39464F849 /* DeepSeekCostWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeepSeekCostWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CB7B943018A222C086CDB3F /* MenuBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarManager.swift; sourceTree = "<group>"; };
+		410AB56D44B275A2776B1196 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		89DB9C0D3DA2A2A517F0B663 /* DeepSeekCostWidget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeepSeekCostWidget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFCEF3BF78DDC81E108D31D /* Widget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Widget.entitlements; sourceTree = "<group>"; };
+		95335C8F3D39D682F2B5F06B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		9D862705E75806FFFDED65D2 /* WidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBundle.swift; sourceTree = "<group>"; };
+		9F9129E6BD6A996BCB023491 /* WidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetEntryView.swift; sourceTree = "<group>"; };
+		A903C4D643FE8FAB2A24D646 /* SmallWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmallWidgetView.swift; sourceTree = "<group>"; };
+		AD505B03DA9ECD0C3F72BB39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AEDEF00BCCAB39E07AC02201 /* DeepSeekAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepSeekAPI.swift; sourceTree = "<group>"; };
 		CA7B0DBF83316F436E7AF29F /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
+		D938C4AEB28FE15FB6175759 /* PopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverView.swift; sourceTree = "<group>"; };
+		DA03CFDF164C9B65056FFD97 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		F11B58225842A5FE72FFBD49 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F9C97AEA903C691227512CCA /* LargeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeWidgetView.swift; sourceTree = "<group>"; };
+		FBAED1572E7437E1C638B2FC /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		8C2E38C6ABA89D33883490FC /* Widget */ = {
 			isa = PBXGroup;
 			children = (
+				F11B58225842A5FE72FFBD49 /* Assets.xcassets */,
+				F9C97AEA903C691227512CCA /* LargeWidgetView.swift */,
+				169693AACF06814899DFD949 /* MediumWidgetView.swift */,
+				FBAED1572E7437E1C638B2FC /* Provider.swift */,
+				A903C4D643FE8FAB2A24D646 /* SmallWidgetView.swift */,
 				8BFCEF3BF78DDC81E108D31D /* Widget.entitlements */,
+				9D862705E75806FFFDED65D2 /* WidgetBundle.swift */,
+				9F9129E6BD6A996BCB023491 /* WidgetEntryView.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -53,6 +98,10 @@
 		93EF76C3E88EE0CA3B73CE3B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				2FFBA01676004D8A9161BF69 /* AppGroup.swift */,
+				AEDEF00BCCAB39E07AC02201 /* DeepSeekAPI.swift */,
+				95335C8F3D39D682F2B5F06B /* Models.swift */,
+				0323ADFCD61DCB17B252B660 /* Strings.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -80,6 +129,12 @@
 			isa = PBXGroup;
 			children = (
 				CA7B0DBF83316F436E7AF29F /* App.entitlements */,
+				AD505B03DA9ECD0C3F72BB39 /* Assets.xcassets */,
+				DA03CFDF164C9B65056FFD97 /* DataManager.swift */,
+				2B293487B006F12F20B815D6 /* DeepSeekCostWidgetApp.swift */,
+				3CB7B943018A222C086CDB3F /* MenuBarManager.swift */,
+				D938C4AEB28FE15FB6175759 /* PopoverView.swift */,
+				410AB56D44B275A2776B1196 /* SettingsView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -92,6 +147,7 @@
 			buildConfigurationList = 7F3C158CEA4FCCB4F73152F4 /* Build configuration list for PBXNativeTarget "DeepSeekCostWidgetExtension" */;
 			buildPhases = (
 				43FE2E3C714D71BC7448F6A1 /* Sources */,
+				2C5738813E04391FBD9ABE06 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -109,6 +165,7 @@
 			buildConfigurationList = 88A846384BF916596C2F6EA6 /* Build configuration list for PBXNativeTarget "DeepSeekCostWidget" */;
 			buildPhases = (
 				BB073B93C1458B028F3DA677 /* Sources */,
+				0EDFBF796DD38606E69B4A64 /* Resources */,
 				6130865EB42CE58D541773E3 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -132,20 +189,6 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					ADCCB6541BC90AA2A4E0BBA0 = {
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
-					5D7961EAE6D7FC6D9690649C = {
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-						};
-					};
 				};
 			};
 			buildConfigurationList = AA05EC483D3CCDE24FE9E197 /* Build configuration list for PBXProject "DeepSeekCostWidget" */;
@@ -168,11 +211,40 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		0EDFBF796DD38606E69B4A64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADF2FF6E094DD5EAD9796B52 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2C5738813E04391FBD9ABE06 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4BFCCD327F4BCA2C3CC3FFC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		43FE2E3C714D71BC7448F6A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1085ABA2D8674D424AC2836E /* AppGroup.swift in Sources */,
+				253C9722988717D39D9831B9 /* DeepSeekAPI.swift in Sources */,
+				C1FC788EE0DA52BEEAE405F6 /* LargeWidgetView.swift in Sources */,
+				E7BCBCCA74DECBE081F29682 /* MediumWidgetView.swift in Sources */,
+				9472470DA582A3D7C3654D15 /* Models.swift in Sources */,
+				01A13681B455D6344319C626 /* Provider.swift in Sources */,
+				41B60CF66E3A31E093B42C6A /* SmallWidgetView.swift in Sources */,
+				BBA6FC94C2F8252F1658CECE /* Strings.swift in Sources */,
+				284489EC504F8BBAE28B88C0 /* WidgetBundle.swift in Sources */,
+				8F3323E0E0CEDF301D495F9D /* WidgetEntryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +252,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2818CBBD7EE0C3D764D12B6A /* AppGroup.swift in Sources */,
+				ECAB22CB4332FE5E22C674BA /* DataManager.swift in Sources */,
+				F5CB4C90753FE175F223C583 /* DeepSeekAPI.swift in Sources */,
+				975DA3C165C71131AF4F6DFC /* DeepSeekCostWidgetApp.swift in Sources */,
+				48494C37B2B8A5EAA89D5D8A /* MenuBarManager.swift in Sources */,
+				5BDE4C8DEDA9A17E20451D61 /* Models.swift in Sources */,
+				34992CDBB5592BFE871E5B45 /* PopoverView.swift in Sources */,
+				C723E3530CAA881B7E518D2E /* SettingsView.swift in Sources */,
+				12C036A80A8063BE78886A53 /* Strings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +281,6 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DeepSeekCostWidget;
 				INFOPLIST_KEY_NSExtension = "[\"NSExtensionPointIdentifier\": \"com.apple.widgetkit-extension\"]";
@@ -212,7 +292,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app.widget;
 				SDKROOT = macosx;
-				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Release;
 		};
@@ -222,7 +301,6 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = Widget/Widget.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = DeepSeekCostWidget;
 				INFOPLIST_KEY_NSExtension = "[\"NSExtensionPointIdentifier\": \"com.apple.widgetkit-extension\"]";
@@ -234,7 +312,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app.widget;
 				SDKROOT = macosx;
-				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Debug;
 		};
@@ -244,7 +321,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -256,7 +332,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app;
 				SDKROOT = macosx;
-				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Release;
 		};
@@ -266,7 +341,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = URXRP62983;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -278,7 +352,6 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.deepseekcostwidget.app;
 				SDKROOT = macosx;
-				AppGroupIdentifier = "URXRP62983.com.deepseekcostwidget.group";
 			};
 			name = Debug;
 		};

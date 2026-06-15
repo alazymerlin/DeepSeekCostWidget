@@ -23,14 +23,14 @@ struct SmallWidgetView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.accentColor)
 
-                Text("本月消耗")
+                Text(L10n.monthlyCost)
                     .font(.caption2)
                     .foregroundColor(.secondary)
 
                 Spacer()
 
                 HStack {
-                    Text("💰 \(entry.displayAmount(data.totalBalance))")
+                    Text("\(L10n.balance) \(entry.displayAmount(data.totalBalance))")
                         .font(.caption2.monospacedDigit())
                         .foregroundColor(.secondary)
                 }
@@ -45,7 +45,7 @@ struct SmallWidgetView: View {
         VStack(spacing: 4) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundColor(.orange)
-            Text(entry.error ?? "请配置 API Key")
+            Text(entry.error ?? L10n.noAPIKey)
                 .font(.caption2)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)

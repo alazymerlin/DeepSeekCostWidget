@@ -24,7 +24,7 @@ struct MediumWidgetView: View {
                             .font(.title2.monospacedDigit())
                             .fontWeight(.bold)
                             .foregroundColor(.accentColor)
-                        Text("本月")
+                        Text(L10n.monthlyCost)
                             .font(.caption2)
                             .foregroundColor(.secondary)
                     }
@@ -32,12 +32,12 @@ struct MediumWidgetView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(entry.displayAmount(data.todayCost))
                             .font(.headline.monospacedDigit())
-                        Text("今日")
+                        Text(L10n.todayCost)
                             .font(.caption2)
                             .foregroundColor(.secondary)
                     }
 
-                    Text("余额 \(entry.displayAmount(data.totalBalance))")
+                    Text("\(L10n.balance)  \(entry.displayAmount(data.totalBalance))")
                         .font(.caption2.monospacedDigit())
                         .foregroundColor(.secondary)
                 }
@@ -87,7 +87,7 @@ struct MediumWidgetView: View {
         VStack(spacing: 4) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundColor(.orange)
-            Text(entry.error ?? "请配置 API Key")
+            Text(entry.error ?? L10n.noAPIKey)
                 .font(.caption)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.secondary)

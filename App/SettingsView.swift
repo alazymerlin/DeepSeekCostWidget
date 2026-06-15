@@ -5,16 +5,16 @@ final class SettingsStore: ObservableObject {
     @Published var apiKey: String
     @Published var refreshInterval: Int
     @Published var currency: AppSettings.Currency
-    @Published var exchangeRate: Double
     @Published var apiBaseURL: String
+    @Published var initialBalance: Double
 
     init() {
         let s = AppGroup.loadSettings()
         apiKey = s.apiKey
         refreshInterval = s.refreshIntervalMinutes
         currency = s.currency
-        exchangeRate = s.exchangeRate
         apiBaseURL = s.apiBaseURL
+        initialBalance = s.initialBalance
     }
 
     func save() {
@@ -22,8 +22,10 @@ final class SettingsStore: ObservableObject {
             apiKey: apiKey,
             refreshIntervalMinutes: refreshInterval,
             currency: currency,
-            exchangeRate: exchangeRate,
-            apiBaseURL: apiBaseURL
+            exchangeRate: 7.25,
+            apiBaseURL: apiBaseURL,
+            initialBalance: initialBalance,
+            lastTrackedMonth: AppGroup.loadSettings().lastTrackedMonth
         )
         AppGroup.saveSettings(s)
         DataManager.shared.updateRefreshInterval()
@@ -32,40 +34,18 @@ final class SettingsStore: ObservableObject {
 
 struct SettingsView: View {
     @StateObject private var store = SettingsStore()
-    @State private var launchAtLogin: Bool = false
 
     var body: some View {
         TabView {
-            generalTab.tabItem { Label("通用", systemImage: "gearshape") }
             apiTab.tabItem { Label("API", systemImage: "key.fill") }
+            generalTab.tabItem { Label("通用", systemImage: "gearshape") }
         }
         .frame(width: 400, height: 300)
         .onChange(of: store.apiKey) { store.save() }
         .onChange(of: store.refreshInterval) { store.save() }
         .onChange(of: store.currency) { store.save() }
-        .onChange(of: store.exchangeRate) { store.save() }
         .onChange(of: store.apiBaseURL) { store.save() }
-    }
-
-    private var generalTab: some View {
-        Form {
-            Section("显示") {
-                Picker("货币单位", selection: $store.currency) {
-                    ForEach(AppSettings.Currency.allCases, id: \.self) { c in
-                        Text(c.rawValue).tag(c)
-                    }
-                }
-
-                if store.currency == .cny {
-                    HStack {
-                        Text("汇率 (1 USD = )")
-                        TextField("7.25", value: $store.exchangeRate, format: .number)
-                            .frame(width: 80)
-                    }
-                }
-            }
-        }
-        .formStyle(.grouped)
+        .onChange(of: store.initialBalance) { store.save() }
     }
 
     private var apiTab: some View {
@@ -85,6 +65,30 @@ struct SettingsView: View {
                 }
 
                 TextField("API Base URL", text: $store.apiBaseURL)
+            }
+        }
+        .formStyle(.grouped)
+    }
+
+    private var generalTab: some View {
+        Form {
+            Section("显示") {
+                Picker("货币单位", selection: $store.currency) {
+                    ForEach(AppSettings.Currency.allCases, id: \.self) { c in
+                        Text(c.rawValue).tag(c)
+                    }
+                }
+            }
+
+            Section("计费基准") {
+                HStack {
+                    Text("充值总额 (¥)")
+                    TextField("0.00", value: $store.initialBalance, format: .number)
+                        .frame(width: 80)
+                }
+                Text("填首次充值金额后，消耗 = 充值总额 - 当前余额")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
             }
         }
         .formStyle(.grouped)

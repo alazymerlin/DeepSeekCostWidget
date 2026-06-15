@@ -72,14 +72,14 @@ final class DataManager: ObservableObject {
 
     // MARK: - Currency conversion
 
-    func displayAmount(_ usdAmount: Double) -> String {
+    func displayAmount(_ amount: Double) -> String {
         let settings = AppGroup.loadSettings()
         switch settings.currency {
         case .cny:
-            let cny = usdAmount * settings.exchangeRate
-            return String(format: "¥%.2f", cny)
+            return String(format: "¥%.2f", amount)
         case .usd:
-            return String(format: "$%.2f", usdAmount)
+            let usd = amount / settings.exchangeRate
+            return String(format: "$%.2f", usd)
         }
     }
 }
