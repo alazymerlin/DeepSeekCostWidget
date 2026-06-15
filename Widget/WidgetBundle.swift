@@ -9,7 +9,7 @@ struct DeepSeekCostWidgetBundle: WidgetBundle {
 }
 
 struct DeepSeekCostWidget: Widget {
-    let kind = "com.deepseekcostwidget.widget"
+    let kind = "com.deepseekcostwidget.app.widget"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(
@@ -19,8 +19,8 @@ struct DeepSeekCostWidget: Widget {
             WidgetEntryView(entry: entry)
                 .containerBackground(.ultraThinMaterial, for: .widget)
         }
-        .configurationDisplayName("DeepSeek 费用")
-        .description("查看 DeepSeek API 消耗情况")
+        .configurationDisplayName("DeepSeek Cost")
+        .description("Monitor DeepSeek API usage and balance")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

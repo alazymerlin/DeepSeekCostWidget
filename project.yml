@@ -18,7 +18,7 @@ targets:
       - path: Shared
     settings:
       base:
-        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_FILE: App/Info.plist
         INFOPLIST_KEY_NSHumanReadableCopyright: ""
         INFOPLIST_KEY_LSUIElement: YES
         INFOPLIST_KEY_NSMainNibFile: ""

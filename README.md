@@ -31,6 +31,11 @@ cd DeepSeekCostWidget
 xcodegen generate
 open DeepSeekCostWidget.xcodeproj
 
+# IMPORTANT: Widget extension only works in Release builds
+# Use Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
+# Or build from command line:
+#   xcodebuild -project DeepSeekCostWidget.xcodeproj -scheme DeepSeekCostWidget -configuration Release build
+
 # 2. Set your Team in Xcode
 #    Both targets → Signing & Capabilities → Team
 
@@ -78,6 +83,11 @@ git clone https://github.com/klinee591-bit/DeepSeekCostWidget.git
 cd DeepSeekCostWidget
 xcodegen generate
 open DeepSeekCostWidget.xcodeproj
+
+# 重要：小组件必须在 Release 模式下构建
+# Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
+# 或命令行构建：
+#   xcodebuild -project DeepSeekCostWidget.xcodeproj -scheme DeepSeekCostWidget -configuration Release build
 
 # 2. 在 Xcode 里选择 Team
 #    两个 target → Signing & Capabilities → Team
