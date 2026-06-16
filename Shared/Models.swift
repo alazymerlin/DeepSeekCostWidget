@@ -64,9 +64,41 @@ struct AppSettings: Codable {
     var apiBaseURL: String = "https://api.deepseek.com"
     var initialBalance: Double = 0
     var lastTrackedMonth: String = ""
+    var todayBaseBalance: Double?
+    var todayBaseDate: String?
+    var manualModelCosts: [ModelCost]?
+
+    static let currentUsageMonth = "2026-06"
+    static let currentUsageDay = "2026-06-16"
+    static let currentBalance = 554.89
+    static let currentMonthlyCost = 218.34
+    static let currentTodayCost = 3.18
+
+    static var currentMonthStartBalance: Double {
+        currentBalance + currentMonthlyCost
+    }
+
+    static var currentTodayBaseBalance: Double {
+        currentBalance + currentTodayCost
+    }
+
+    static let currentManualModelCosts: [ModelCost] = [
+        ModelCost(model: "deepseek-v4-flash", amount: 0.16, percentage: 5.05, totalTokens: 0),
+        ModelCost(model: "deepseek-v4-pro", amount: 3.01, percentage: 94.95, totalTokens: 0),
+    ]
 
     enum Currency: String, Codable, CaseIterable {
         case usd = "USD"
         case cny = "CNY"
+    }
+
+    func displayAmount(_ amount: Double) -> String {
+        switch currency {
+        case .cny:
+            return String(format: "¥%.2f", amount)
+        case .usd:
+            let rate = exchangeRate > 0 ? exchangeRate : 7.25
+            return String(format: "$%.2f", amount / rate)
+        }
     }
 }

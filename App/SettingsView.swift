@@ -18,6 +18,7 @@ final class SettingsStore: ObservableObject {
     }
 
     func save() {
+        let existing = AppGroup.loadSettings()
         let s = AppSettings(
             apiKey: apiKey,
             refreshIntervalMinutes: refreshInterval,
@@ -25,7 +26,10 @@ final class SettingsStore: ObservableObject {
             exchangeRate: 7.25,
             apiBaseURL: apiBaseURL,
             initialBalance: initialBalance,
-            lastTrackedMonth: AppGroup.loadSettings().lastTrackedMonth
+            lastTrackedMonth: existing.lastTrackedMonth,
+            todayBaseBalance: existing.todayBaseBalance,
+            todayBaseDate: existing.todayBaseDate,
+            manualModelCosts: existing.manualModelCosts
         )
         AppGroup.saveSettings(s)
         DataManager.shared.updateRefreshInterval()
@@ -82,11 +86,11 @@ struct SettingsView: View {
 
             Section("计费基准") {
                 HStack {
-                    Text("充值总额 (¥)")
+                    Text("本月起始余额 (¥)")
                     TextField("0.00", value: $store.initialBalance, format: .number)
                         .frame(width: 80)
                 }
-                Text("填首次充值金额后，消耗 = 充值总额 - 当前余额")
+                Text("已按截图配置：¥773.23 = ¥554.89 + 六月消费 ¥218.34")
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }

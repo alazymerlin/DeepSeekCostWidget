@@ -25,30 +25,40 @@ struct LargeWidgetView: View {
                 }
                 VStack(alignment: .leading, spacing: 4) {
                     Text(L10n.trend14Days).font(.caption).foregroundColor(.secondary)
-                    Chart(data.dailyCosts) { dc in
-                        BarMark(x: .value("D", dc.date), y: .value("C", dc.amount))
-                            .foregroundStyle(LinearGradient(
-                                colors: [.accentColor.opacity(0.8), .accentColor.opacity(0.3)], startPoint: .top, endPoint: .bottom))
+                    Chart {
+                        ForEach(data.dailyCosts) { dc in
+                            BarMark(x: .value("D", dc.date), y: .value("C", dc.amount))
+                                .foregroundStyle(LinearGradient(
+                                    colors: [.accentColor.opacity(0.8), .accentColor.opacity(0.3)], startPoint: .top, endPoint: .bottom))
+                                .annotation(position: .top, alignment: .center, spacing: 0) {
+                                    Text(entry.displayAmount(dc.amount))
+                                        .font(.system(size: 7))
+                                        .foregroundColor(.secondary)
+                                }
+                        }
                     }
                     .chartXAxis { AxisMarks(values: .automatic(desiredCount: 7)) { _ in
                         AxisValueLabel(format: .dateTime.month(.twoDigits).day(.twoDigits)).font(.system(size: 8))
                     }}
                     .chartYAxis { AxisMarks(position: .trailing) { _ in AxisValueLabel().font(.system(size: 8)) }}
                     .frame(height: 80)
+                    .padding(.bottom, 4)
                 }
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(L10n.modelDistribution).font(.caption).foregroundColor(.secondary)
-                    ForEach(data.modelCosts) { mc in
-                        let pct = min(mc.amount * 10, 100)
-                        VStack(spacing: 3) {
-                            HStack {
-                                Text(mc.displayName).font(.caption)
-                                Spacer()
-                                Text(entry.displayAmount(mc.amount)).font(.caption.monospacedDigit()).foregroundColor(.accentColor)
+                if !data.modelCosts.isEmpty {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(L10n.modelDistribution).font(.caption).foregroundColor(.secondary)
+                        ForEach(data.modelCosts) { mc in
+                            let pct = min(max(mc.percentage, 0), 100)
+                            VStack(spacing: 3) {
+                                HStack {
+                                    Text(mc.displayName).font(.caption)
+                                    Spacer()
+                                    Text(entry.displayAmount(mc.amount)).font(.caption.monospacedDigit()).foregroundColor(.accentColor)
+                                }
+                                GeometryReader { geo in
+                                    RoundedRectangle(cornerRadius: 2).fill(Color.accentColor.opacity(0.5)).frame(width: geo.size.width * pct / 100)
+                                }.frame(height: 6)
                             }
-                            GeometryReader { geo in
-                                RoundedRectangle(cornerRadius: 2).fill(Color.accentColor.opacity(0.5)).frame(width: geo.size.width * pct / 100)
-                            }.frame(height: 6)
                         }
                     }
                 }
