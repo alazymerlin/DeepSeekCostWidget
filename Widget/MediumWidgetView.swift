@@ -46,12 +46,19 @@ struct MediumWidgetView: View {
                 VStack(spacing: 8) {
                     // 14天趋势柱状图
                     if !data.dailyCosts.isEmpty {
-                        Chart(data.dailyCosts) { dc in
-                            BarMark(
-                                x: .value("日期", dc.date),
-                                y: .value("费用", dc.amount)
-                            )
-                            .foregroundStyle(Color.accentColor.opacity(0.6))
+                        Chart {
+                            ForEach(data.dailyCosts) { dc in
+                                BarMark(
+                                    x: .value("日期", dc.date),
+                                    y: .value("费用", dc.amount)
+                                )
+                                .foregroundStyle(Color.accentColor.opacity(0.6))
+                                .annotation(position: .top, alignment: .center, spacing: 0) {
+                                    Text(entry.displayAmount(dc.amount))
+                                        .font(.system(size: 6))
+                                        .foregroundColor(.secondary)
+                                }
+                            }
                         }
                         .chartXAxis {
                             AxisMarks(values: .automatic(desiredCount: 4)) { _ in
@@ -63,16 +70,17 @@ struct MediumWidgetView: View {
                         .frame(height: 60)
                     }
 
-                    // 模型占比
-                    HStack(spacing: 8) {
-                        ForEach(data.modelCosts.prefix(3)) { mc in
-                            VStack(spacing: 2) {
-                                Text(mc.displayName)
-                                    .font(.system(size: 8))
-                                    .lineLimit(1)
-                                Text("\(Int(mc.percentage))%")
-                                    .font(.system(size: 8, weight: .medium))
-                                    .foregroundColor(.accentColor)
+                    if !data.modelCosts.isEmpty {
+                        HStack(spacing: 8) {
+                            ForEach(data.modelCosts.prefix(3)) { mc in
+                                VStack(spacing: 2) {
+                                    Text(mc.displayName)
+                                        .font(.system(size: 8))
+                                        .lineLimit(1)
+                                    Text("\(Int(mc.percentage))%")
+                                        .font(.system(size: 8, weight: .medium))
+                                        .foregroundColor(.accentColor)
+                                }
                             }
                         }
                     }

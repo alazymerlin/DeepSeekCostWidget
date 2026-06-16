@@ -22,6 +22,8 @@ enum L10n {
     static var balance: String { isZh ? "余额" : "Balance" }
     static var modelCost: String { isZh ? "模型消耗" : "Model Usage" }
     static var updated: String { isZh ? "更新于" : "Updated" }
+    static var estimatedFromBalance: String { isZh ? "根据余额变化估算" : "Estimated from balance changes" }
+    static var noModelDetails: String { isZh ? "余额接口暂无模型明细" : "No model breakdown from balance API" }
 
     // MARK: - Widget labels
 
