@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import WidgetKit
 
 @MainActor
 final class DataManager: ObservableObject {
@@ -60,6 +61,7 @@ final class DataManager: ObservableObject {
                 let data = try await DeepSeekAPI.shared.fetchCostData(settings: settings)
                 costData = data
                 AppGroup.saveCostData(data)
+                WidgetCenter.shared.reloadAllTimelines()
             } catch {
                 lastError = error.localizedDescription
                 AppGroup.saveError(lastError!)
@@ -73,13 +75,6 @@ final class DataManager: ObservableObject {
     // MARK: - Currency conversion
 
     func displayAmount(_ amount: Double) -> String {
-        let settings = AppGroup.loadSettings()
-        switch settings.currency {
-        case .cny:
-            return String(format: "¥%.2f", amount)
-        case .usd:
-            let usd = amount / settings.exchangeRate
-            return String(format: "$%.2f", usd)
-        }
+        AppGroup.loadSettings().displayAmount(amount)
     }
 }

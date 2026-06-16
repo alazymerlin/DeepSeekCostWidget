@@ -95,11 +95,18 @@ struct PopoverView: View {
                     Spacer()
                     Text(dm.displayAmount(data.totalBalance)).font(.subheadline.monospacedDigit())
                 }
+                Label(L10n.estimatedFromBalance, systemImage: "info.circle")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
                 if !data.modelCosts.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(L10n.modelCost).font(.caption).foregroundColor(.secondary)
                         ForEach(data.modelCosts) { ModelCostRow(mc: $0, dm: dm) }
                     }
+                } else {
+                    Label(L10n.noModelDetails, systemImage: "chart.pie")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
                 }
                 Text(L10n.updated + "  \(formatTime(data.lastUpdated))")
                     .font(.caption2).foregroundColor(.secondary)
@@ -177,7 +184,7 @@ struct PopoverView: View {
 private struct ModelCostRow: View {
     let mc: ModelCost; let dm: DataManager
     @State private var hovered = false
-    private var barPercent: Double { min(mc.amount * 10, 100) }
+    private var barPercent: Double { min(max(mc.percentage, 0), 100) }
 
     var body: some View {
         HStack(spacing: 6) {
