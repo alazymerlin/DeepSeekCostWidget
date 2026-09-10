@@ -19,28 +19,38 @@ A native macOS menu bar app + desktop widget for monitoring your DeepSeek API us
 ### Requirements
 
 - macOS 14.0+
-- Xcode 15.0+
-- [xcodegen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
+- Swift 5.9+ (macOS 自带 Command Line Tools 即可，**不需要 Xcode**)
 
 ### Getting Started
 
 ```bash
-# 1. Clone & generate Xcode project
-git clone https://github.com/klinee591-bit/DeepSeekCostWidget.git
+# 1. Clone
+git clone https://github.com/alazymerlin/DeepSeekCostWidget.git
 cd DeepSeekCostWidget
+
+# 2. 一键编译 + 打包 DMG（无需 Xcode）
+chmod +x deploy.command
+./deploy.command
+# 产物: 桌面 DeepSeekCostWidget.dmg
+
+# 3. 安装
+#    双击 DMG → 拖 App 到 /Applications
+#    首次打开: 右键(或 Control+点击) App → 打开 → 仍要打开
+```
+
+> 若提示缺少命令行工具，运行 `xcode-select --install`
+
+### Build with Xcode (optional)
+
+项目同时保留了 Xcode 工程，可构建菜单栏 App + 桌面小组件：
+
+```bash
+brew install xcodegen
 xcodegen generate
 open DeepSeekCostWidget.xcodeproj
-
-# IMPORTANT: Widget extension only works in Release builds
-# Use Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
-# Or build from command line:
-#   xcodebuild -project DeepSeekCostWidget.xcodeproj -scheme DeepSeekCostWidget -configuration Release build
-
-# 2. Set your Team in Xcode
-#    Both targets → Signing & Capabilities → Team
-
-# 3. Configure App Groups for both targets
-#    Add capability "App Groups" and use the same group identifier
+# 注意：小组件仅在 Release 配置下工作
+# Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
+# 两个 target 均需选择 Team，并配置相同的 App Groups
 ```
 
 ### Configure API Key
@@ -48,6 +58,15 @@ open DeepSeekCostWidget.xcodeproj
 1. Visit https://platform.deepseek.com → API Keys → Create an API Key
 2. Run the app, click the menu bar icon → **Settings** tab
 3. Paste your API key, choose currency and refresh interval
+
+### Calibrate Model Breakdown (optional)
+
+Total cost is tracked automatically from your balance — no setup needed.
+To split it per model, import a usage export:
+
+1. Go to https://platform.deepseek.com/usage → **Export**
+2. In the app → Settings → **Import**, select the downloaded `cost-*.csv` and `amount-*.csv`
+3. Model ratios are calibrated once; no need to re-import monthly
 
 ### Add Widget to Desktop
 
@@ -72,28 +91,38 @@ open DeepSeekCostWidget.xcodeproj
 ### 环境要求
 
 - macOS 14.0+
-- Xcode 15.0+
-- [xcodegen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`)
+- Swift 5.9+（macOS 自带命令行工具即可，**不需要装 Xcode**）
 
 ### 首次运行
 
 ```bash
-# 1. 克隆并生成 Xcode 项目
-git clone https://github.com/klinee591-bit/DeepSeekCostWidget.git
+# 1. 克隆
+git clone https://github.com/alazymerlin/DeepSeekCostWidget.git
 cd DeepSeekCostWidget
+
+# 2. 一键编译 + 打包 DMG（无需 Xcode）
+chmod +x deploy.command
+./deploy.command
+# 产物: 桌面 DeepSeekCostWidget.dmg
+
+# 3. 安装
+#    双击 DMG → 拖 App 到 /Applications
+#    首次打开: 右键(或 Control+点击) App → 打开 → 仍要打开
+```
+
+> 若提示缺少命令行工具，运行 `xcode-select --install`
+
+### 用 Xcode 构建（可选）
+
+项目同时保留了 Xcode 工程，可构建菜单栏 App + 桌面小组件：
+
+```bash
+brew install xcodegen
 xcodegen generate
 open DeepSeekCostWidget.xcodeproj
-
-# 重要：小组件必须在 Release 模式下构建
+# 注意：小组件仅在 Release 配置下工作
 # Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
-# 或命令行构建：
-#   xcodebuild -project DeepSeekCostWidget.xcodeproj -scheme DeepSeekCostWidget -configuration Release build
-
-# 2. 在 Xcode 里选择 Team
-#    两个 target → Signing & Capabilities → Team
-
-# 3. 给两个 target 配置 App Groups
-#    添加 "App Groups" capability，使用相同的 group 标识
+# 两个 target 均需选择 Team，并配置相同的 App Groups
 ```
 
 ### 配置 API Key
@@ -101,6 +130,14 @@ open DeepSeekCostWidget.xcodeproj
 1. 访问 https://platform.deepseek.com → API Keys → 创建 API Key
 2. 运行 App，点击菜单栏图标 → **设置** 标签
 3. 填入 API Key，选择货币单位和刷新间隔
+
+### 校准模型占比（可选）
+
+总费用靠余额自动追踪，无需配置。若想细分到各模型：
+
+1. 打开 https://platform.deepseek.com/usage → **导出**
+2. App 内 → 设置 → **导入**，选择下载的 `cost-*.csv` 和 `amount-*.csv`
+3. 模型占比校准一次即可，无需每月重新导入
 
 ### 添加小组件到桌面
 
@@ -114,26 +151,30 @@ open DeepSeekCostWidget.xcodeproj
 
 ```
 DeepSeekCostWidget/
-├── project.yml                  # xcodegen project config
-├── Shared/                      # Shared code (App + Widget)
-│   ├── Models.swift             # Data models
-│   ├── AppGroup.swift           # App Groups shared storage
-│   └── DeepSeekAPI.swift        # DeepSeek API client
-├── App/                         # Host App
+├── Package.swift                    # SwiftPM manifest (menu bar app)
+├── deploy.command                   # 一键编译 + 打包 DMG
+├── Sources/DeepSeekCostWidget/      # 菜单栏 App 源码 (SwiftPM)
 │   ├── DeepSeekCostWidgetApp.swift  # App entry point
-│   ├── MenuBarManager.swift     # NSStatusBar manager
-│   ├── DataManager.swift        # Timer + data coordinator
-│   ├── PopoverView.swift        # Menu bar popover panel
-│   ├── SettingsView.swift       # Settings (ViewModel)
-│   └── App.entitlements
-└── Widget/                      # Widget Extension
-    ├── WidgetBundle.swift       # Widget entry
-    ├── Provider.swift           # TimelineProvider
-    ├── WidgetEntryView.swift    # Size router
-    ├── SmallWidgetView.swift    # Small widget
-    ├── MediumWidgetView.swift   # Medium widget
-    ├── LargeWidgetView.swift    # Large widget
-    └── Widget.entitlements
+│   ├── MenuBarManager.swift         # NSStatusBar + popover
+│   ├── DataManager.swift            # Timer + data coordinator
+│   ├── PopoverView.swift            # Menu bar popover panel
+│   ├── SettingsView.swift           # Settings view model
+│   ├── DeepSeekAPI.swift            # Balance API + model cost split
+│   ├── UsageCSV.swift               # CSV export parser
+│   ├── AppGroup.swift               # UserDefaults + Keychain storage
+│   ├── Models.swift                 # Data models
+│   └── Strings.swift                # zh/en localization
+│
+├── project.yml                      # xcodegen config (Xcode build)
+├── Shared/                          # Shared code (App + Widget)
+├── App/                             # Host App (Xcode target)
+└── Widget/                          # Widget Extension (Xcode target)
+    ├── WidgetBundle.swift           # Widget entry
+    ├── Provider.swift               # TimelineProvider
+    ├── WidgetEntryView.swift        # Size router
+    ├── SmallWidgetView.swift        # Small widget
+    ├── MediumWidgetView.swift       # Medium widget
+    └── LargeWidgetView.swift        # Large widget
 ```
 
 ## License

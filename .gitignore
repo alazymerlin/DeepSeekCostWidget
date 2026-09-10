@@ -1,3 +1,7 @@
+# SwiftPM
+.build/
+Package.resolved
+
 # Xcode
 *.xcuserstate
 *.xcworkspace
