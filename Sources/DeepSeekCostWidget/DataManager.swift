@@ -133,6 +133,23 @@ final class DataManager: ObservableObject {
         return "\(f.string(from: u.lastImportDate))校准"
     }
 
+    /// 今日是否在 CSV 覆盖范围内（有当日模型明细）
+    /// 否 → 无法拆分当日模型消耗，不能按历史占比猜（会显示错误的模型）
+    var todayHasCSVDetail: Bool {
+        guard let u = usageData else { return false }
+        return u.dailyCostsByModel[Self.dayKey()] != nil
+    }
+
+    /// CSV 数据截止到几号，如 "9/8"
+    var csvDataThroughLabel: String {
+        guard let u = usageData, u.csvEndDate.count == 8 else { return "" }
+        return "\(u.csvEndDate.dropFirst(4).prefix(2))/\(u.csvEndDate.suffix(2))"
+    }
+
+    private static func dayKey() -> String {
+        let f = DateFormatter(); f.dateFormat = "yyyyMMdd"; return f.string(from: Date())
+    }
+
     /// 当月模型消耗 — 按 CSV 当月累计精确拆分（与"本月消耗"卡片口径一致）
     var monthlyModelCosts: [ModelCost] {
         guard let costData else { return [] }
