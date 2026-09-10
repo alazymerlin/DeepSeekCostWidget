@@ -112,20 +112,30 @@ struct PopoverView: View {
                         )
                     }
 
-                    // 模型统计 — 始终显示
-                    modelCard(
-                        icon: "sun.max.fill", color: .orange,
-                        title: "当日模型消耗",
-                        models: data.modelCosts.isEmpty
-                            ? defaultModelCosts(todayAmount: data.todayCost)
-                            : data.modelCosts
-                    )
+                    // 当日模型消耗 — 仅有 CSV 当日明细时才拆分
+                    if dm.todayHasCSVDetail {
+                        modelCard(
+                            icon: "sun.max.fill", color: .orange,
+                            title: "当日模型消耗",
+                            models: data.modelCosts
+                        )
+                    } else {
+                        totalOnlyCard(
+                            icon: "sun.max.fill", color: .orange,
+                            title: "当日模型消耗",
+                            amount: dm.displayAmount(data.todayCost),
+                            note: "CSV 未含今日，无法拆分到模型"
+                        )
+                    }
+
+                    // 当月模型消耗
                     modelCard(
                         icon: "calendar.badge.clock", color: .blue,
                         title: "当月模型消耗",
-                        models: dm.monthlyModelCosts.isEmpty
-                            ? defaultModelCosts(todayAmount: data.monthlyCost)
-                            : dm.monthlyModelCosts
+                        models: dm.monthlyModelCosts,
+                        note: dm.csvDataThroughLabel.isEmpty
+                            ? nil
+                            : "CSV 截至 \(dm.csvDataThroughLabel)，其后按占比估算"
                     )
 
                     // 余额卡片 — 底部小字
@@ -296,7 +306,10 @@ struct PopoverView: View {
 
     // MARK: - Model Card
 
-    private func modelCard(icon: String, color: Color, title: String, models: [ModelCost]) -> some View {
+    private func modelCard(
+        icon: String, color: Color, title: String,
+        models: [ModelCost], note: String? = nil
+    ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Image(systemName: icon).font(.caption2).foregroundColor(color)
@@ -306,16 +319,39 @@ struct PopoverView: View {
                 Text("Token").font(.caption2).foregroundColor(.secondary.opacity(0.5)).frame(width: 60, alignment: .trailing)
             }
             ForEach(models) { ModelCostRow(mc: $0, dm: dm) }
+            if let note {
+                Text(note)
+                    .font(.caption2).foregroundColor(.secondary.opacity(0.5))
+            }
         }
         .padding(10)
         .background(Color.primary.opacity(0.04))
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
-    private func defaultModelCosts(todayAmount: Double) -> [ModelCost] {
-        let models = ["deepseek-v4-pro", "deepseek-v4-flash"]
-        let each = todayAmount / Double(models.count)
-        return models.map { ModelCost(model: $0, amount: each, percentage: 100.0 / Double(models.count), totalTokens: 0) }
+    /// 只有总额、无模型明细的卡片（CSV 未覆盖时用，避免显示猜测值）
+    private func totalOnlyCard(
+        icon: String, color: Color, title: String,
+        amount: String, note: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Image(systemName: icon).font(.caption2).foregroundColor(color)
+                Text(title).font(.caption).foregroundColor(.secondary)
+                Spacer()
+                Text(amount)
+                    .font(.caption.monospacedDigit())
+                    .foregroundColor(.accentColor)
+            }
+            HStack(spacing: 3) {
+                Image(systemName: "info.circle").font(.caption2)
+                Text(note).font(.caption2)
+            }
+            .foregroundColor(.secondary.opacity(0.6))
+        }
+        .padding(10)
+        .background(Color.primary.opacity(0.04))
+        .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
     // MARK: - Helpers
