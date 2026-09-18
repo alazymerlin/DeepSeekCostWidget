@@ -35,13 +35,12 @@ struct ModelCost: Codable, Identifiable, Equatable {
     let percentage: Double
     let totalTokens: Int64
 
-    /// 模型显示名（含历史别名）
+    /// 模型显示名
+    /// 现役只有两个模型；历史名（v4-flash / vision-exp）在 UsageCSV.normalizeModel
+    /// 里已归并到 deepseek-flash，不会走到这张表
     static let knownModels: [String: String] = [
+        "deepseek-flash": "Flash",
         "deepseek-v4-pro": "V4 Pro",
-        "deepseek-v4-flash": "V4 Flash",
-        "deepseek-flash": "V4.1 Flash",
-        "deepseek-v4.1-flash": "V4.1 Flash",
-        "deepseek-v4.1-pro": "V4.1 Pro",
     ]
 
     var displayName: String {
@@ -58,6 +57,34 @@ struct ModelCost: Codable, Identifiable, Equatable {
         }
         return "\(totalTokens)"
     }
+}
+
+// MARK: - Codex 用量
+
+/// Codex 的一个额度窗口（5 小时 / 周）
+struct CodexWindow: Equatable, Sendable {
+    let usedPercent: Double
+    let windowMinutes: Int
+    let resetsAt: Date
+
+    /// 周窗口（10080 分钟）；否则按 5 小时窗口处理
+    var isWeekly: Bool { windowMinutes >= 10080 }
+
+    /// 有效用量 —— 已过重置点说明额度已归还，
+    /// 且该记录之后没有任何新数据，故为 0
+    func effectivePercent(now: Date) -> Double {
+        now >= resetsAt ? 0 : usedPercent
+    }
+}
+
+/// 从本地 Codex 会话文件中读到的限流快照
+struct CodexUsage: Equatable, Sendable {
+    let primary: CodexWindow?
+    let secondary: CodexWindow?
+    let creditsBalance: Double?
+    /// 快照时间（取源文件修改时间）
+    let recordedAt: Date
+    let sourceFile: String
 }
 
 struct AppSettings: Codable {

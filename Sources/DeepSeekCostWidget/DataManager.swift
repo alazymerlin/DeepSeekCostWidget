@@ -10,9 +10,16 @@ final class DataManager: ObservableObject {
     @Published var isLoading = false
     @Published var lastError: String?
 
+    /// Codex 额度用量（读本地会话文件，与 DeepSeek API Key 无关）
+    @Published var codexUsage: CodexUsage?
+    @Published var codexStatus: CodexResult = .noCodexDir
+    /// 每分钟走一格 —— 让重置时间到点后用量能自动归零，不必等下次刷新
+    @Published var now = Date()
+
     var updateIconHandler: ((CostData?) -> Void)?
 
     private var timer: AnyCancellable?
+    private var clock: AnyCancellable?
     private var refreshTask: Task<Void, Never>?
 
     private init() {
@@ -20,11 +27,14 @@ final class DataManager: ObservableObject {
         usageData = AppGroup.loadUsageData()
         lastError = AppGroup.loadError()
         loadSettingsAndStartTimer()
+        startClock()
 
         // 尝试自动导入 CSV
         if let imported = AppGroup.tryImportCSV() {
             usageData = imported
         }
+
+        Task { await loadCodex() }
     }
 
     // MARK: - Timer
@@ -43,6 +53,29 @@ final class DataManager: ObservableObject {
 
     func updateRefreshInterval() {
         loadSettingsAndStartTimer()
+    }
+
+    /// 只更新时间戳，不碰网络 —— 供 Codex 重置时间倒计时使用
+    private func startClock() {
+        clock?.cancel()
+        clock = Timer.publish(every: 60, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] date in
+                self?.now = date
+            }
+        _ = clock // retain
+    }
+
+    // MARK: - Codex 用量
+
+    private func loadCodex() async {
+        let result = await Task.detached(priority: .utility) { CodexReader.load() }.value
+        codexStatus = result
+        if case .ok(let usage) = result {
+            codexUsage = usage
+        } else {
+            codexUsage = nil
+        }
     }
 
     // MARK: - CSV
@@ -69,6 +102,9 @@ final class DataManager: ObservableObject {
             isLoading = true
             lastError = nil
             AppGroup.clearError()
+
+            // 放在 API Key 判空之前 —— Codex 用量不依赖 DeepSeek Key
+            await loadCodex()
 
             let settings = AppGroup.loadSettings()
 
@@ -117,20 +153,17 @@ final class DataManager: ObservableObject {
         let f = DateFormatter(); f.dateFormat = "M月"; return f.string(from: Date())
     }
 
-    /// 模型占比来源说明
-    var ratioSource: String {
-        if hasCSVData, let u = usageData {
-            let m = u.csvEndDate.dropFirst(4).prefix(2)
-            return "\(m)月CSV校准"
-        }
-        return "默认"
+    /// CSV 样本月份，如 "09"
+    var csvMonthLabel: String {
+        guard hasCSVData, let u = usageData, u.csvEndDate.count == 8 else { return "—" }
+        return String(u.csvEndDate.dropFirst(4).prefix(2))
     }
 
-    /// 校准日期说明，如 "8月21日校准"
-    var csvCalibrationLabel: String {
-        guard hasCSVData, let u = usageData else { return "未校准" }
+    /// CSV 导入日期，如 "9月18日"
+    var csvImportDateLabel: String {
+        guard hasCSVData, let u = usageData else { return "未导入" }
         let f = DateFormatter(); f.dateFormat = "M月d日"
-        return "\(f.string(from: u.lastImportDate))校准"
+        return f.string(from: u.lastImportDate)
     }
 
     /// 今日是否在 CSV 覆盖范围内（有当日模型明细）

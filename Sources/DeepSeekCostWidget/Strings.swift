@@ -45,6 +45,22 @@ enum L10n {
     static var displaySection: String { isZh ? "显示" : "Display" }
     static var currencyUnit: String { isZh ? "货币单位" : "Currency" }
 
+    // MARK: - Codex
+
+    static var codexUsage: String { isZh ? "Codex 用量" : "Codex Usage" }
+    static var codex5h: String { isZh ? "5小时" : "5-Hour" }
+    static var codexWeekly: String { isZh ? "本周" : "Weekly" }
+    static var codexCredits: String { isZh ? "额度" : "Credits" }
+    static var codexResets: String { isZh ? "后重置" : "reset" }
+    static var codexRemaining: String { isZh ? "还剩" : "left" }
+    static var codexResetted: String { isZh ? "已重置" : "reset done" }
+    static var codexNoPermission: String { isZh ? "无「文稿」文件夹访问权限" : "No access to Documents folder" }
+    static var codexPermissionHint: String {
+        isZh ? "Codex 数据在 ~/Documents 下，需授权后才能读取"
+             : "Codex data lives under ~/Documents; permission required"
+    }
+    static var openSystemSettings: String { isZh ? "打开系统设置" : "Open Settings" }
+
     // MARK: - Time intervals
 
     static func minutes(_ n: Int) -> String {

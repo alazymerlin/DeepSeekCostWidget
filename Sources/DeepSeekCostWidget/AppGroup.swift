@@ -57,8 +57,10 @@ enum AppGroup {
     static func loadUsageData() -> ParsedUsageData? {
         guard let d = defaults.data(forKey: usageDataKey),
               let data = try? JSONDecoder().decode(ParsedUsageData.self, from: d) else { return nil }
-        // 缓存含旧模型名（如已合并的视觉模型）→ 作废，触发从 CSV 重新解析
-        if data.costByModel.keys.contains("deepseek-v4-flash-vision-exp") { return nil }
+        // 缓存含已归并的历史模型名 → 作废，触发从 CSV 重新解析
+        // （模型名归并规则变更后，旧缓存不会自动更新，必须在这里拦一道）
+        let mergedLegacyModels: Set<String> = ["deepseek-v4-flash", "deepseek-v4-flash-vision-exp"]
+        if !mergedLegacyModels.isDisjoint(with: data.costByModel.keys) { return nil }
         return data
     }
 

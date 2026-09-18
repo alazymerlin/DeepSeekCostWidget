@@ -119,11 +119,12 @@ enum UsageCSV {
     }
 
     /// 模型名归一化
-    /// 2026-09 官方把视觉模型(vision-exp)合并进 Flash，历史数据统一归并
+    /// 2026-09-10 起 `deepseek-flash` 上线，取代 `deepseek-v4-flash` 与视觉模型
+    /// `vision-exp`，历史数据统一归并到现役模型名，避免同一个模型显示成两行
     static func normalizeModel(_ raw: String) -> String {
         switch raw {
-        case "deepseek-v4-flash-vision-exp":
-            return "deepseek-v4-flash"
+        case "deepseek-v4-flash", "deepseek-v4-flash-vision-exp":
+            return "deepseek-flash"
         default:
             return raw
         }

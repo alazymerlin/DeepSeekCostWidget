@@ -143,6 +143,38 @@ final class DeepSeekAPI {
         )
     }
 
+    /// 验证 API Key 是否可用 —— 只请求余额并返回，不写入任何状态
+    func validateKey(settings: AppSettings) async throws -> Double {
+        let key = settings.apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !key.isEmpty else { throw DeepSeekAPIError.decodeError("请先填写 API Key") }
+
+        let baseURL = settings.apiBaseURL
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        guard let url = URL(string: "\(baseURL)/user/balance") else {
+            throw DeepSeekAPIError.invalidURL
+        }
+        var req = URLRequest(url: url)
+        req.setValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
+
+        let (data, resp) = try await session.data(for: req)
+        guard let r = resp as? HTTPURLResponse else { throw DeepSeekAPIError.invalidResponse }
+        guard r.statusCode == 200 else {
+            throw DeepSeekAPIError.httpError(r.statusCode, String(data: data, encoding: .utf8) ?? "")
+        }
+        let balanceResponse: BalanceResponse
+        do {
+            balanceResponse = try JSONDecoder().decode(BalanceResponse.self, from: data)
+        } catch {
+            throw DeepSeekAPIError.decodeError(error.localizedDescription)
+        }
+        guard let info = balanceResponse.balance_infos.first(where: { $0.currency == "CNY" })
+                ?? balanceResponse.balance_infos.first else {
+            throw DeepSeekAPIError.decodeError("无法解析余额")
+        }
+        return Self.d(info.total_balance)
+    }
+
     // MARK: - 内置定价 (¥/token, 2026年7月)
 
     /// 模型定价表 (CNY per token, 空闲时段价)
@@ -164,8 +196,8 @@ final class DeepSeekAPI {
     /// 模型列表从 CSV 动态读取，自动适应模型增减（如视觉模型上下线）
     static func splitModelCosts(amount: Double, usageData: ParsedUsageData?, date: String? = nil) -> [ModelCost] {
         guard let ud = usageData, ud.totalCost > 0, !ud.allModels.isEmpty else {
-            // 无 CSV 时：用已知模型均分兜底
-            let fallback = ["deepseek-v4-pro", "deepseek-v4-flash"]
+            // 无 CSV 时：用现役模型均分兜底
+            let fallback = ["deepseek-v4-pro", "deepseek-flash"]
             let each = amount / Double(fallback.count)
             return fallback.map {
                 ModelCost(model: $0, amount: each, percentage: 100.0 / Double(fallback.count), totalTokens: 0)
@@ -186,6 +218,7 @@ final class DeepSeekAPI {
         return models.map { model in
             let exactCost = exact[model] ?? 0
             let ratio = ud.modelRatio(model)
+            let share = exactCost + extra * ratio
 
             // Token：当日取当日明细，当月取累计
             let tokens: Int
@@ -197,8 +230,10 @@ final class DeepSeekAPI {
 
             return ModelCost(
                 model: model,
-                amount: exactCost + extra * ratio,
-                percentage: ud.totalCost > 0 ? (exactCost / ud.totalCost * 100) : 0,
+                amount: share,
+                // 占本次拆分金额的比例。原先用 exactCost/totalCost，
+                // 在纯估算（CSV 未覆盖该日）时 exactCost 恒为 0，会全部显示 0%
+                percentage: amount > 0 ? (share / amount * 100) : 0,
                 totalTokens: Int64(tokens)
             )
         }.sorted { $0.amount > $1.amount }
