@@ -1,7 +1,6 @@
 import Foundation
-import Security
 
-/// 本地存储 — 使用 UserDefaults + Keychain
+/// 本地存储 — 全部使用 UserDefaults
 enum AppGroup {
     static let defaults = UserDefaults.standard
 
@@ -12,9 +11,7 @@ enum AppGroup {
     private static let errorKey = "com.deepseekcostwidget.lastError"
     private static let usageDataKey = "com.deepseekcostwidget.usageData"
     private static let csvSnapshotKey = "com.deepseekcostwidget.csvSnapshot"
-    private static let apiKeyService = "com.deepseekcostwidget.apiKey"
     private static let apiKeyUserDefaultsKey = "com.deepseekcostwidget.apiKey.ud"
-    private static let apiKeyAccount = "DeepSeekAPIKey"
 
     // MARK: - CSV 快照余额（用于月消耗计算）
 
@@ -116,11 +113,13 @@ enum AppGroup {
 
     // MARK: - Settings
 
+    /// 不使用 Keychain：本 App 是 adhoc 签名、没有稳定代码身份，钥匙串每次都
+    /// 会重新索要密码（重新构建后更甚）；而明文副本本来就在 UserDefaults 里，
+    /// 钥匙串并未提供额外保护，只会带来反复弹窗。
     static func saveSettings(_ s: AppSettings) {
         defaults.set(s.apiKey.trimmingCharacters(in: .whitespacesAndNewlines), forKey: apiKeyUserDefaultsKey)
 
         var safeSettings = s
-        saveAPIKey(s.apiKey.trimmingCharacters(in: .whitespacesAndNewlines))
         safeSettings.apiKey = ""
 
         if let d = try? JSONEncoder().encode(safeSettings) {
@@ -137,11 +136,8 @@ enum AppGroup {
             settings = AppSettings()
         }
 
-        // 从 Keychain 恢复 API Key
-        if let key = loadAPIKey(), !key.isEmpty {
+        if let key = defaults.string(forKey: apiKeyUserDefaultsKey), !key.isEmpty {
             settings.apiKey = key
-        } else if let udKey = defaults.string(forKey: apiKeyUserDefaultsKey), !udKey.isEmpty {
-            settings.apiKey = udKey
         }
 
         return settings
@@ -153,50 +149,4 @@ enum AppGroup {
     static func loadError() -> String? { defaults.string(forKey: errorKey) }
     static func clearError() { defaults.removeObject(forKey: errorKey) }
 
-    // MARK: - API Key (Keychain)
-
-    private static func saveAPIKey(_ key: String) {
-        if key.isEmpty {
-            deleteAPIKey()
-            return
-        }
-
-        let data = Data(key.utf8)
-        let query = apiKeyQuery()
-        let attrs: [String: Any] = [kSecValueData as String: data]
-
-        let status = SecItemUpdate(query as CFDictionary, attrs as CFDictionary)
-        if status == errSecItemNotFound {
-            var addQuery = query
-            addQuery[kSecValueData as String] = data
-            SecItemAdd(addQuery as CFDictionary, nil)
-        }
-    }
-
-    private static func loadAPIKey() -> String? {
-        var query = apiKeyQuery()
-        query[kSecReturnData as String] = true
-        query[kSecMatchLimit as String] = kSecMatchLimitOne
-
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status == errSecSuccess,
-              let data = item as? Data,
-              let key = String(data: data, encoding: .utf8) else {
-            return nil
-        }
-        return key
-    }
-
-    private static func deleteAPIKey() {
-        SecItemDelete(apiKeyQuery() as CFDictionary)
-    }
-
-    private static func apiKeyQuery() -> [String: Any] {
-        [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: apiKeyService,
-            kSecAttrAccount as String: apiKeyAccount,
-        ]
-    }
 }
