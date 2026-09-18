@@ -14,8 +14,10 @@ final class MenuBarManager: ObservableObject {
         updateIcon(nil)
 
         if let button = statusItem?.button {
-            button.action = #selector(togglePopover)
             button.target = self
+            button.action = #selector(handleStatusItemClick)
+            // 左右键都要接住，否则右键事件根本不会送到 action
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
 
         popover = NSPopover()
@@ -53,6 +55,47 @@ final class MenuBarManager: ObservableObject {
         }
 
         statusItem?.button?.title = ""
+    }
+
+    /// 左键开面板，右键弹菜单（退出从面板底栏挪到了这里）
+    @objc private func handleStatusItemClick() {
+        if NSApp.currentEvent?.type == .rightMouseUp {
+            showContextMenu()
+        } else {
+            togglePopover()
+        }
+    }
+
+    private func showContextMenu() {
+        let menu = NSMenu()
+
+        let open = NSMenuItem(title: L10n.openPanel, action: #selector(togglePopover), keyEquivalent: "")
+        open.target = self
+        menu.addItem(open)
+
+        let refresh = NSMenuItem(title: L10n.refresh, action: #selector(refreshNow), keyEquivalent: "r")
+        refresh.target = self
+        menu.addItem(refresh)
+
+        menu.addItem(.separator())
+
+        let quit = NSMenuItem(title: L10n.quit, action: #selector(quitApp), keyEquivalent: "q")
+        quit.target = self
+        menu.addItem(quit)
+
+        if let button = statusItem?.button {
+            menu.popUp(positioning: nil,
+                       at: NSPoint(x: 0, y: button.bounds.height + 4),
+                       in: button)
+        }
+    }
+
+    @objc private func refreshNow() {
+        Task { @MainActor in DataManager.shared.refresh() }
+    }
+
+    @objc private func quitApp() {
+        NSApp.terminate(nil)
     }
 
     @objc private func togglePopover() {

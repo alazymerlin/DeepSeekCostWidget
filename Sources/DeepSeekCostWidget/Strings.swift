@@ -12,6 +12,7 @@ enum L10n {
     static var overview: String { isZh ? "概览" : "Overview" }
     static var settings: String { isZh ? "设置" : "Settings" }
     static var refresh: String { isZh ? "刷新" : "Refresh" }
+    static var openPanel: String { isZh ? "打开面板" : "Open Panel" }
     static var quit: String { isZh ? "退出" : "Quit" }
 
     // MARK: - Cost labels

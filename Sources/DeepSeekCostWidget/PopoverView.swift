@@ -15,10 +15,22 @@ struct PopoverView: View {
                     .font(.headline)
                     .foregroundColor(.accentColor)
                 Spacer()
-                ProgressView()
-                    .scaleEffect(0.5)
-                    .frame(width: 16, height: 16)
-                    .opacity(dm.isLoading ? 1 : 0)
+                // 刷新 —— 从底栏挪上来并放大；加载中原地换成转圈
+                if dm.isLoading {
+                    ProgressView()
+                        .scaleEffect(0.6)
+                        .frame(width: 28, height: 28)
+                } else {
+                    Button(action: { dm.refresh() }) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 16, weight: .medium))
+                            .frame(width: 28, height: 28)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundColor(.accentColor)
+                    .help(L10n.refresh)
+                }
             }
             .padding(.horizontal)
             .padding(.top, 12)
@@ -32,15 +44,8 @@ struct PopoverView: View {
 
             Divider()
 
-            // Bottom bar
-            HStack(spacing: 8) {
-                Button(action: { dm.refresh() }) {
-                    Label(L10n.refresh, systemImage: "arrow.clockwise")
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .tint(.accentColor)
-
+            // Bottom bar —— 只剩两个 tab：刷新已上移，退出已改到右键菜单
+            HStack(spacing: 20) {
                 Spacer()
 
                 Button(action: { switchTab(to: 0) }) {
@@ -58,13 +63,6 @@ struct PopoverView: View {
                 .foregroundColor(tab == 1 ? .accentColor : .secondary)
 
                 Spacer()
-
-                Button(action: { NSApp.terminate(nil) }) {
-                    Label(L10n.quit, systemImage: "power")
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .tint(.secondary)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
