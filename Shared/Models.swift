@@ -68,8 +68,10 @@ struct AppSettings: Codable {
     var todayBaseDate: String?
     var manualModelCosts: [ModelCost]?
 
-    static let currentUsageMonth = "2026-06"
-    static let currentUsageDay = "2026-06-16"
+    // 首次启动的占位默认值 —— 真实数字由 App 运行时从接口取得后写入。
+    // 本仓库是公开的，不要在这里填真实账户数据。
+    static let currentUsageMonth = ""
+    static let currentUsageDay = ""
     static let currentBalance = 0.0
     static let currentMonthlyCost = 0.0
     static let currentTodayCost = 0.0
@@ -82,10 +84,8 @@ struct AppSettings: Codable {
         currentBalance + currentTodayCost
     }
 
-    static let currentManualModelCosts: [ModelCost] = [
-        ModelCost(model: "deepseek-v4-flash", amount: 0.16, percentage: 5.05, totalTokens: 0),
-        ModelCost(model: "deepseek-v4-pro", amount: 3.01, percentage: 94.95, totalTokens: 0),
-    ]
+    /// 模型占比的种子值 —— 留空，由 App 按实际用量推算
+    static let currentManualModelCosts: [ModelCost] = []
 
     enum Currency: String, Codable, CaseIterable {
         case usd = "USD"

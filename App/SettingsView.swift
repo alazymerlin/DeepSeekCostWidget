@@ -90,7 +90,7 @@ struct SettingsView: View {
                     TextField("0.00", value: $store.initialBalance, format: .number)
                         .frame(width: 80)
                 }
-                Text("已按截图配置：¥0.0 = ¥0.0 + 六月消费 ¥0.0")
+                Text("本月起始余额留空则按首次刷新时的余额自动推算")
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }
