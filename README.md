@@ -51,6 +51,8 @@ open DeepSeekCostWidget.xcodeproj
 # 注意：小组件仅在 Release 配置下工作
 # Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
 # 两个 target 均需选择 Team，并配置相同的 App Groups
+# 注意：本仓库不含任何 Team ID，App/Widget 的 entitlements 与
+#      Shared/AppGroup.swift 里的 YOUR_TEAM_ID 需替换为你自己的
 ```
 
 ### Configure API Key
@@ -66,7 +68,9 @@ To split it per model, import a usage export:
 
 1. Go to https://platform.deepseek.com/usage → **Export**
 2. In the app → Settings → **Import**, select the downloaded `cost-*.csv` and `amount-*.csv`
-3. Model ratios are calibrated once; no need to re-import monthly
+   (select **both** files — ratios come from `cost-*.csv`, token counts from `amount-*.csv`)
+3. The ratio sample ages over time, so re-importing monthly is recommended;
+   re-importing also makes per-day token counts show up for the days the export covers
 
 ### Add Widget to Desktop
 
@@ -123,6 +127,8 @@ open DeepSeekCostWidget.xcodeproj
 # 注意：小组件仅在 Release 配置下工作
 # Cmd+Shift+, → Edit Scheme → Run → Build Configuration → Release
 # 两个 target 均需选择 Team，并配置相同的 App Groups
+# 注意：本仓库不含任何 Team ID，App/Widget 的 entitlements 与
+#      Shared/AppGroup.swift 里的 YOUR_TEAM_ID 需替换为你自己的
 ```
 
 ### 配置 API Key
@@ -137,7 +143,9 @@ open DeepSeekCostWidget.xcodeproj
 
 1. 打开 https://platform.deepseek.com/usage → **导出**
 2. App 内 → 设置 → **导入**，选择下载的 `cost-*.csv` 和 `amount-*.csv`
-3. 模型占比校准一次即可，无需每月重新导入
+   （**两个文件要一起选**——占比来自 `cost-*.csv`，token 数来自 `amount-*.csv`）
+3. 占比样本会随时间变旧，建议每月重导一次；
+   重导后，导出范围覆盖到的日期也会显示真实 token 数
 
 ### 添加小组件到桌面
 
